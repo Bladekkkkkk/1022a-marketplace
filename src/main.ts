@@ -75,7 +75,7 @@ app.post("/usuarios", async (req, res) => {
         })
         const {id,nome,email,senha,confirmarsenha,datanascimento,telefone,endereco} = req.body
         const [result, fields] = 
-                    await connection.query("INSERT INTO produtos VALUES (?,?,?,?,?,?,?,?)",
+                    await connection.query("INSERT INTO usuarios VALUES (?,?,?,?,?,?,?,?)",
                             [id,nome,email,senha,confirmarsenha,datanascimento,telefone,endereco])
         await connection.end()
         res.send(result)

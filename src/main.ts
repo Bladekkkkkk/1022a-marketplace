@@ -21,6 +21,7 @@ app.get("/produtos", async (req, res) => {
         res.status(500).send("Server ERROR")
     }
 })
+
 app.get("/produtos/:id", async (req, res) => {
     try {
         
@@ -34,12 +35,13 @@ app.get("/produtos/:id", async (req, res) => {
         res.status(500).send("Server ERROR")
     }
 })
+
 app.post("/produtos", async (req, res) => {
     try {
-        const {id,nome,descricao,preco,imagem} = req.body
+        const {id,nome,marca,tamanhotela,resolucaotela,proporcaotela,frequenciatela,imagem} = req.body
         const banco = new BancoMysql()
         await banco.criarConexao()
-        const produto = {id:parseInt(id),nome,descricao,preco,imagem}
+        const produto = {id:parseInt(id),nome,marca,tamanhotela,resolucaotela,proporcaotela,frequenciatela,imagem}
         const result = await banco.inserir(produto)
         await banco.finalizarConexao()
         res.send(result) 
@@ -67,8 +69,8 @@ app.delete("/produtos/:id",async(req,res)=>{
 
 //ALTERAR
 app.put("/produtos/:id",async(req,res)=>{
-    const {nome,descricao,preco,imagem} = req.body
-    const produto = {nome,descricao,preco,imagem}
+    const {nome,marca,tamanhotela,resolucaotela,proporcaotela,frequenciatela,imagem} = req.body
+    const produto = {nome,marca,tamanhotela,resolucaotela,proporcaotela,frequenciatela,imagem}
     const banco = new BancoMysql()
     await banco.criarConexao()
     const result = await banco.alterar(req.params.id,produto)

@@ -38,8 +38,6 @@ class BancoMysql{
         return result;
     }
     
-    
-    
     async excluir(id:string){
         if(!this.connection) throw new Error("Erro de conexão com o banco de dados.")
         const [result, fields] = await this.connection.query("DELETE FROM produtos WHERE id = ?",[id])

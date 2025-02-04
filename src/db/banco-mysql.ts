@@ -27,6 +27,12 @@ class BancoMysql{
         const [result, fields] = await this.connection.query("SELECT * FROM produtos")
         return result
     }
+    async listarusuarios(){
+        if(!this.connection) throw new Error("Erro de conexão com o banco de dados.")
+        const [result, fields] = await this.connection.query("SELECT * FROM usuarios")
+        return result
+    }
+
     async inserir(produto: { nome: string; marca: string; tamanhotela: string; resolucaotela: string; proporcaotela: string; frequenciatela: string; imagem: string }) {
         if (!this.connection) throw new Error("Erro de conexão com o banco de dados.");
     
@@ -54,6 +60,11 @@ class BancoMysql{
     async listarPorId(id:string){
         if(!this.connection) throw new Error("Erro de conexão com o banco de dados.")
         const [result, fields] = await this.connection.query("SELECT * FROM produtos WHERE id = ?",[id]) as RowDataPacket[]
+        return result[0]
+    }
+    async listarPorIdusuarios(id:string){
+        if(!this.connection) throw new Error("Erro de conexão com o banco de dados.")
+        const [result, fields] = await this.connection.query("SELECT * FROM usuarios WHERE id = ?",[id]) as RowDataPacket[]
         return result[0]
     }
 }

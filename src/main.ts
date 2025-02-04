@@ -49,6 +49,19 @@ app.get("/produtos/:id", async (req, res) => {
         res.status(500).send("Server ERROR")
     }
 })
+app.get("/usuarios/:id", async (req, res) => {
+    try {
+        
+        const banco = new BancoMysql()
+        await banco.criarConexao()
+        const result = await banco.listarPorId(req.params.id)
+        await banco.finalizarConexao()
+        res.send(result)
+    } catch (e) {
+        console.log(e)
+        res.status(500).send("Server ERROR")
+    }
+})
 
 app.post("/produtos", async (req, res) => {
     try {
@@ -72,21 +85,52 @@ app.post("/produtos", async (req, res) => {
     }
 });
 
+app.post("/usuarios", async (req, res) => {
+    try {
+        const { nome, marca, tamanhotela, resolucaotela, proporcaotela, frequenciatela, imagem } = req.body;
+
+        // Criando o objeto sem o id, já que ele será gerado automaticamente pelo banco
+        const produto = { nome, marca, tamanhotela, resolucaotela, proporcaotela, frequenciatela, imagem };
+        
+        const banco = new BancoMysql();
+        await banco.criarConexao();
+
+        // Inserindo o produto sem o id
+        const result = await banco.inserir(produto);
+
+        await banco.finalizarConexao();
+        res.send(result); // Retorne o resultado da inserção
+
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e);
+    }
+});
 
 //DELETAR
-app.delete("/produtos/:id",async(req,res)=>{
+app.delete("/usuarios/:id",async(req,res)=>{
     try{
         const banco = new BancoMysql()
         await banco.criarConexao()
-        const result = await banco.excluir(req.params.id)
+        const result = await banco.excluirusuario(req.params.id)
         await banco.finalizarConexao()
-        res.status(200).send("Produto excluido com sucesso id: "+req.params.id)
+        res.status(200).send("Usuário excluido com sucesso id: "+req.params.id)
     }
     catch(e){
         console.log(e)
         res.status(500).send("Erro ao excluir")
     }
     
+})
+
+app.put("/usuarios/:id",async(req,res)=>{
+    const {nome,email,senha,datanascimento,telefone} = req.body
+    const usuario = {nome,email,senha,datanascimento,telefone}
+    const banco = new BancoMysql()
+    await banco.criarConexao()
+    const result = await banco.alterarusuario(req.params.id,usuario)
+    await banco.finalizarConexao()
+    res.status(200).send("Usuário alterado com sucesso id: "+req.params.id)
 })
 
 //ALTERAR

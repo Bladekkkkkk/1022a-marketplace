@@ -49,10 +49,21 @@ class BancoMysql{
         const [result, fields] = await this.connection.query("DELETE FROM produtos WHERE id = ?",[id])
         return result
     }
+    async excluirusuario(id:string){
+        if(!this.connection) throw new Error("Erro de conexão com o banco de dados.")
+        const [result, fields] = await this.connection.query("DELETE FROM usuarios WHERE id = ?",[id])
+        return result
+    }
     async alterar(id:string,produto:{id?:string,nome:string,marca:string,tamanhotela:string,resolucaotela:string,proporcaotela:string,frequenciatela:string,imagem:string}){
         if(!this.connection) throw new Error("Erro de conexão com o banco de dados.")
         const [result, fields] = await this.connection.query("UPDATE produtos SET nome=?,marca=?,tamanhotela=?,resolucaotela=?,proporcaotela=?,frequenciatela=?,imagem=? WHERE id=?",
         [produto.nome,produto.marca,produto.tamanhotela,produto.resolucaotela,produto.proporcaotela,produto.frequenciatela,produto.imagem,id])
+        return result
+    }
+    async alterarusuario(id:string,usuario:{id?:string,nome:string,email:string,senha:string,datanascimento:string,telefone:string}){
+        if(!this.connection) throw new Error("Erro de conexão com o banco de dados.")
+        const [result, fields] = await this.connection.query("UPDATE usuarios SET nome=?,email=?,senha=?,datanascimento=?,telefone=? WHERE id=?",
+        [usuario.nome,usuario.email,usuario.senha,usuario.datanascimento,usuario.telefone,id])
         return result
     }
     async listarPorId(id:string){

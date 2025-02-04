@@ -27,10 +27,10 @@ class BancoMysql{
         const [result, fields] = await this.connection.query("SELECT * FROM produtos")
         return result
     }
-    async inserir(produto:{id:number,nome:string,marca:string,tamanhotela:string,resolucaotela:string,proporcaotela:string,frequenciatela:string,imagem:string}){
+    async inserir(produto:{nome:string,marca:string,tamanhotela:string,resolucaotela:string,proporcaotela:string,frequenciatela:string,imagem:string}){
         if(!this.connection) throw new Error("Erro de conexão com o banco de dados.")
-        const [result, fields] = await this.connection.query("INSERT INTO produtos VALUES (?,?,?,?,?,?,?,?)",
-        [produto.id,produto.nome,produto.marca,produto.tamanhotela,produto.resolucaotela,produto.proporcaotela,produto.frequenciatela,produto.imagem])
+        const [result, fields] = await this.connection.query("INSERT INTO produtos VALUES (?,?,?,?,?,?,?)",
+        [produto.nome,produto.marca,produto.tamanhotela,produto.resolucaotela,produto.proporcaotela,produto.frequenciatela,produto.imagem])
         return result
     }
     async excluir(id:string){

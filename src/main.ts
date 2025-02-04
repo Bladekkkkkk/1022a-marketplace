@@ -21,6 +21,20 @@ app.get("/produtos", async (req, res) => {
         res.status(500).send("Server ERROR")
     }
 })
+app.get("/usuarios", async (req, res) => {
+    try {
+        const banco = new BancoMysql()
+        await banco.criarConexao()
+        const result = await banco.listarusuarios()
+        await banco.finalizarConexao()
+        res.send(result)
+    } catch (e) {
+        console.log(e)
+        res.status(500).send("Server ERROR")
+    }
+})
+
+
 
 app.get("/produtos/:id", async (req, res) => {
     try {

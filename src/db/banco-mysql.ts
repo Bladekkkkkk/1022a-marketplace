@@ -43,6 +43,16 @@ class BancoMysql{
         );
         return result;
     }
+    async inserirusuario(usuario: { nome: string; email: string; senha: string; confirmarsenha: string; datanascimento: string; telefone: string; endereco: string }) {
+        if (!this.connection) throw new Error("Erro de conexão com o banco de dados.");
+    
+        // Inserção sem o id, já que o banco irá gerar automaticamente
+        const [result] = await this.connection.query(
+            "INSERT INTO usuarios (nome, email, senha, confirmarsenha, datanascimento, telefone, endereco) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            [usuario.nome, usuario.email, usuario.senha, usuario.confirmarsenha, usuario.datanascimento, usuario.telefone, usuario.endereco]
+        );
+        return result;
+    }
     
     async excluir(id:string){
         if(!this.connection) throw new Error("Erro de conexão com o banco de dados.")

@@ -8,72 +8,6 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-app.get("/usuarios", async (req, res) => {
-    try {
-        const banco = new BancoMysql()
-        await banco.criarConexao()
-        const result = await banco.listar()
-        await banco.finalizarConexao()
-        res.send(result)
-    } catch (e) {
-        console.log(e)
-        res.status(500).send("Server ERROR")
-    }
-})
-
-app.get("/usuarios/:id", async (req, res) => {
-    try {
-        
-        const banco = new BancoMysql()
-        await banco.criarConexao()
-        const result = await banco.listarPorId(req.params.id)
-        await banco.finalizarConexao()
-        res.send(result)
-    } catch (e) {
-        console.log(e)
-        res.status(500).send("Server ERROR")
-    }
-})
-
-app.post("/usuarios", async (req, res) => {
-    try {
-        const {id,nome,marca,tamanhotela,resolucaotela,proporcaotela,frequenciatela,imagem} = req.body
-        const banco = new BancoMysql()
-        await banco.criarConexao()
-        const usuario = {id:parseInt(id),nome,marca,tamanhotela,resolucaotela,proporcaotela,frequenciatela,imagem}
-        const result = await banco.inserir(usuario)
-        await banco.finalizarConexao()
-        res.send(result) 
-    } catch (e) {
-        console.log(e)
-        res.status(500).send(e)
-    }
-})
-app.delete("/usuarios/:id",async(req,res)=>{
-    try{
-        const banco = new BancoMysql()
-        await banco.criarConexao()
-        const result = await banco.excluir(req.params.id)
-        await banco.finalizarConexao()
-        res.status(200).send("Usuario excluido com sucesso id: "+req.params.id)
-    }
-    catch(e){
-        console.log(e)
-        res.status(500).send("Erro ao excluir")
-    }
-    
-})
-
-//ALTERAR
-app.put("/usuarios/:id",async(req,res)=>{
-    const {nome,marca,tamanhotela,resolucaotela,proporcaotela,frequenciatela,imagem} = req.body
-    const usuario = {nome,marca,tamanhotela,resolucaotela,proporcaotela,frequenciatela,imagem}
-    const banco = new BancoMysql()
-    await banco.criarConexao()
-    const result = await banco.alterar(req.params.id,usuario)
-    await banco.finalizarConexao()
-    res.status(200).send("Usuario alterado com sucesso id: "+req.params.id)
-})
 
 app.get("/produtos", async (req, res) => {
     try {
@@ -120,7 +54,7 @@ app.get("/usuarios/:id", async (req, res) => {
         
         const banco = new BancoMysql()
         await banco.criarConexao()
-        const result = await banco.listarPorId(req.params.id)
+        const result = await banco.listarPorIdusuarios(req.params.id)
         await banco.finalizarConexao()
         res.send(result)
     } catch (e) {
@@ -153,16 +87,16 @@ app.post("/produtos", async (req, res) => {
 
 app.post("/usuarios", async (req, res) => {
     try {
-        const { nome, marca, tamanhotela, resolucaotela, proporcaotela, frequenciatela, imagem } = req.body;
+        const { nome, email, senha, confirmarsenha, datanascimento, telefone, endereco } = req.body;
 
         // Criando o objeto sem o id, já que ele será gerado automaticamente pelo banco
-        const produto = { nome, marca, tamanhotela, resolucaotela, proporcaotela, frequenciatela, imagem };
+        const usuario = { nome, email, senha, confirmarsenha, datanascimento, telefone, endereco };
         
         const banco = new BancoMysql();
         await banco.criarConexao();
 
         // Inserindo o produto sem o id
-        const result = await banco.inserir(produto);
+        const result = await banco.inserirusuario(usuario);
 
         await banco.finalizarConexao();
         res.send(result); // Retorne o resultado da inserção

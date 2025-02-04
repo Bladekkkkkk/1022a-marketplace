@@ -38,18 +38,26 @@ app.get("/produtos/:id", async (req, res) => {
 
 app.post("/produtos", async (req, res) => {
     try {
-        const {id,nome,marca,tamanhotela,resolucaotela,proporcaotela,frequenciatela,imagem} = req.body
-        const banco = new BancoMysql()
-        await banco.criarConexao()
-        const produto = {id:parseInt(id),nome,marca,tamanhotela,resolucaotela,proporcaotela,frequenciatela,imagem}
-        const result = await banco.inserir(produto)
-        await banco.finalizarConexao()
-        res.send(result) 
+        const { nome, marca, tamanhotela, resolucaotela, proporcaotela, frequenciatela, imagem } = req.body;
+
+        // Criando o objeto sem o id, já que ele será gerado automaticamente pelo banco
+        const produto = { nome, marca, tamanhotela, resolucaotela, proporcaotela, frequenciatela, imagem };
+        
+        const banco = new BancoMysql();
+        await banco.criarConexao();
+
+        // Inserindo o produto sem o id
+        const result = await banco.inserir(produto);
+
+        await banco.finalizarConexao();
+        res.send(result); // Retorne o resultado da inserção
+
     } catch (e) {
-        console.log(e)
-        res.status(500).send(e)
+        console.log(e);
+        res.status(500).send(e);
     }
-})
+});
+
 
 //DELETAR
 app.delete("/produtos/:id",async(req,res)=>{
